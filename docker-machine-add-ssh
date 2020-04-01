@@ -1,0 +1,4 @@
+#!/usr/bin/python3
+from sys import exit
+from docker_machine_add_ssh import main
+exit(main())
