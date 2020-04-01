@@ -147,8 +147,12 @@ def main():
 
     # Write the new file
     SSHFILE.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
-    with open(SSHFILE, 'w', opener=partial(os.open, mode=0o600)) as fp:
-        fp.write('\n'.join(newlines) + '\n')
+    if newlines:
+        with open(SSHFILE, 'w', opener=partial(os.open, mode=0o600)) as fp:
+            fp.write('\n'.join(newlines) + '\n')
+    else:
+        SSHFILE.unlink()
+
     print(f'{host} entry {action} {SSHFILE}.')
 
 if __name__ == '__main__':
