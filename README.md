@@ -10,7 +10,7 @@ scp`](https://docs.docker.com/machine/reference/scp/).
 ### USAGE
 
 ```
-usage: docker-machine-add-ssh [-h] [-r] [-d] [-B] [-S] name
+usage: docker-machine-add-ssh [-h] [-r] [-d] [-f] [-B] [-S] name
 
 Adds docker-machine ssh configuration to your personal ssh configuration.
 Normally, you ssh to a docker-machine using command "docker-machine ssh
@@ -26,6 +26,8 @@ optional arguments:
   -h, --help      show this help message and exit
   -r, --replace   do not fail if host entry already exists, just replace it
   -d, --delete    just delete any existing host entry
+  -f, --files     get parameters directly from files rather than via docker-
+                  machine command
   -B, --nobackup  do not create a backup file
   -S, --nostrict  disable strict host key check
 ```
@@ -102,13 +104,23 @@ vb1 entry deleted from /home/mark/.ssh/config.
 ### DEFAULT ARGUMENTS
 
 You can add default arguments to a personal configuration file
-`~/.config/docker-machine-add-ssh.conf`. If that file exists then each
+`~/.config/docker-machine-add-ssh-flags.conf`. If that file exists then each
 line of arguments will be concatenated and automatically prepended
 to your `docker-machine-add-ssh` command line arguments.
 
+This allow you to set default preferred starting arguments to
+`docker-machine-add-ssh`. Type `docker-machine-add-ssh -h` to see the
+arguments supported.
+E.g. `echo "-r" >~/.config/docker-machine-add-ssh-flags.conf` to make
+`docker-machine-add-ssh` always replace existing host entries even if
+they already exist.
+
 ### INSTALLATION
 
-Ensure `python3-pip` is installed. Python 3.6 or later is required.
+Ensure
+[`docker-machine`](https://docs.docker.com/machine/install-machine) and
+[`python3-pip`](https://docs.python.org/3/installing/index.html) are
+installed. Python 3.6 or later is required.
 
 Note [docker-machine-add-ssh is on
 PyPI](https://pypi.org/project/docker-machine-add-ssh/) so you can just

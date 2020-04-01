@@ -10,17 +10,19 @@ docker-machine.
 '''
 # Author: Mark Blakeney, Apr 2020.
 
-import sys
 import os
+import sys
 import argparse
 import string
 import re
 import shutil
 import json
 import shlex
+import subprocess
 from pathlib import Path
 from datetime import datetime
 from functools import partial
+from urllib.parse import urlparse
 
 SSHFILE = Path('~/.ssh/config').expanduser()
 MACHDIR = Path('~/.docker/machine/machines').expanduser()
@@ -39,15 +41,29 @@ NOSTRICT = '''
     StrictHostKeyChecking no
 '''
 
-# We don't use the `docker-machine env` command to get the data because
-# that command can fail/timeout (e.g. if the machine is restarting or
-# locked up) so it is more reliable to just read the data directly from
-# the docker-machine files. If the machine is shut down then the program
-# will report that no IP address is available. Note that ordinary ssh
-# strict host key checking will intercept the case where the IP address
-# may change and will warn the user.
-def getparams(tpl, host):
-    'Get docker-machine parameters directly from files'
+def getparams_cmd(tpl, host):
+    'Run docker-machine to get this hosts parameters'
+    try:
+        res = subprocess.run(f'docker-machine env {host}'.split(),
+                capture_output=True, universal_newlines=True)
+    except Exception:
+        sys.exit('docker-machine is not installed.')
+
+    if res.returncode != 0:
+        sys.exit('docker-machine error:\n' + res.stderr.strip())
+
+    # Extract the host's docker-machine specific template values
+    for line in res.stdout.splitlines():
+        if 'DOCKER_CERT_PATH=' in line:
+            tpl['idfile'] = line.split('"')[1] + '/id_rsa'
+        elif 'DOCKER_HOST=' in line:
+            tpl['ipaddr'] = urlparse(line.split('"')[1]).hostname
+
+    if 'idfile' not in tpl or 'ipaddr' not in tpl:
+        sys.exit('Could not determine DOCKER_HOST and/or DOCKER_CERT_PATH')
+
+def getparams_files(tpl, host):
+    'Get parameters directly from docker-machine files'
     MDIR = MACHDIR / host
     if not MDIR.exists():
         sys.exit(f'No docker machine "{host}" exists.')
@@ -59,7 +75,7 @@ def getparams(tpl, host):
             sys.exit(f'No {fpath} file exists for {host}.')
         fpaths.append(fpath)
 
-    tpl['idfile'] = str(fpaths[0])
+    tpl['idfile'] = os.fspath(fpaths[0])
 
     with fpaths[1].open() as fp:
         data = json.load(fp)
@@ -77,6 +93,9 @@ def main():
             help='do not fail if host entry already exists, just replace it')
     opt.add_argument('-d', '--delete', action='store_true',
             help='just delete any existing host entry')
+    opt.add_argument('-f', '--files', action='store_true',
+            help='get parameters directly from files rather than via '
+            'docker-machine command')
     opt.add_argument('-B', '--nobackup', action='store_true',
             help='do not create a backup file')
     opt.add_argument('-S', '--nostrict', action='store_true',
@@ -86,7 +105,7 @@ def main():
 
     # Merge in default args from user config file. Then parse the
     # command line.
-    cnffile = CNFDIR / (opt.prog + '.conf')
+    cnffile = CNFDIR / (opt.prog + '-flags.conf')
     cnfargs = shlex.split(cnffile.read_text().strip()) \
             if cnffile.exists() else []
     args = opt.parse_args(cnfargs + sys.argv[1:])
@@ -97,7 +116,7 @@ def main():
         # Set up dict for filling template
         tpl = {'host': host, 'progname': opt.prog, 'datetime':
                 datetime.now().isoformat(sep=' ', timespec='seconds')}
-        getparams(tpl, host)
+        getparams_files(tpl, host) if args.files else getparams_cmd(tpl, host)
 
     # Iterate over ssh config file to search for existing entry and to find
     # insertion point
