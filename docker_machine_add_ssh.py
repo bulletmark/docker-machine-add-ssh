@@ -41,7 +41,7 @@ NOSTRICT = '''
     StrictHostKeyChecking no
 '''
 
-def getparams_cmd(tpl, host):
+def getparams_cmd(tpl: dict, host: str) -> None:
     'Run docker-machine to get this hosts parameters'
     try:
         res = subprocess.run(f'docker-machine env {host}'.split(),
@@ -54,39 +54,30 @@ def getparams_cmd(tpl, host):
 
     # Extract the host's docker-machine specific template values
     for line in res.stdout.splitlines():
-        if 'DOCKER_CERT_PATH=' in line:
-            tpl['idfile'] = line.split('"')[1] + '/id_rsa'
-        elif 'DOCKER_HOST=' in line:
+        if 'DOCKER_HOST=' in line:
             tpl['ipaddr'] = urlparse(line.split('"')[1]).hostname
+        elif 'DOCKER_CERT_PATH=' in line:
+            tpl['idfile'] = line.split('"')[1] + '/id_rsa'
 
-    if 'idfile' not in tpl or 'ipaddr' not in tpl:
+    if 'ipaddr' not in tpl or 'idfile' not in tpl:
         sys.exit('Could not determine DOCKER_HOST and/or DOCKER_CERT_PATH')
 
-def getparams_files(tpl, host):
+def getparams_files(tpl: dict, host: str) -> None:
     'Get parameters directly from docker-machine files'
-    MDIR = MACHDIR / host
-    if not MDIR.exists():
+    conf = MACHDIR / host / 'config.json'
+    if not conf.exists():
         sys.exit(f'No docker machine "{host}" exists.')
 
-    fpaths = []
-    for fname in 'id_rsa', 'config.json':
-        fpath = MDIR / fname
-        if not fpath.exists():
-            sys.exit(f'No {fpath} file exists for {host}.')
-        fpaths.append(fpath)
-
-    tpl['idfile'] = os.fspath(fpaths[0])
-
-    with fpaths[1].open() as fp:
+    with conf.open() as fp:
         data = json.load(fp)
 
-    ipaddr = data.get('Driver', {}).get('IPAddress')
-    if not ipaddr:
-        sys.exit(f'IP address not available for docker machine {host}.')
+    data = data.get('Driver', {})
+    for key, keyval in ('ipaddr', 'IPAddress'), ('idfile', 'SSHKeyPath'):
+        tpl[key] = data.get(keyval)
+        if not tpl[key]:
+            sys.exit(f'{keyval} not available for docker machine {host}.')
 
-    tpl['ipaddr'] = ipaddr
-
-def main():
+def main() -> None:
     # Process command line options
     opt = argparse.ArgumentParser(description=__doc__.strip())
     opt.add_argument('-r', '--replace', action='store_true',
