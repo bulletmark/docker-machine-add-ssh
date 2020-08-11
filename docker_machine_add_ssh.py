@@ -26,7 +26,8 @@ from urllib.parse import urlparse
 
 SSHFILE = Path('~/.ssh/config').expanduser()
 MACHDIR = Path('~/.docker/machine/machines').expanduser()
-CNFDIR = Path('~/.config').expanduser()
+PROG = Path(sys.argv[0]).stem
+CNFFILE = Path(f'~/.config/{PROG}-flags.conf').expanduser()
 
 # The template for the new host entry we write
 TEMPLATE = '''
@@ -79,7 +80,9 @@ def getparams_files(tpl: dict, host: str) -> None:
 
 def main() -> None:
     # Process command line options
-    opt = argparse.ArgumentParser(description=__doc__.strip())
+    opt = argparse.ArgumentParser(description=__doc__.strip(),
+            epilog='Note you can set default starting arguments in '
+            f'~/.config/{PROG}-flags.conf.')
     opt.add_argument('-r', '--replace', action='store_true',
             help='do not fail if host entry already exists, just replace it')
     opt.add_argument('-d', '--delete', action='store_true',
@@ -96,16 +99,15 @@ def main() -> None:
 
     # Merge in default args from user config file. Then parse the
     # command line.
-    cnffile = CNFDIR / (opt.prog + '-flags.conf')
-    cnfargs = shlex.split(cnffile.read_text().strip()) \
-            if cnffile.exists() else []
+    cnfargs = shlex.split(CNFFILE.read_text().strip()) \
+            if CNFFILE.exists() else []
     args = opt.parse_args(cnfargs + sys.argv[1:])
     host = args.name
 
     # Get this host's parameters
     if not args.delete:
         # Set up dict for filling template
-        tpl = {'host': host, 'progname': opt.prog, 'datetime':
+        tpl = {'host': host, 'progname': PROG, 'datetime':
                 datetime.now().isoformat(sep=' ', timespec='seconds')}
         getparams_files(tpl, host) if args.files else getparams_cmd(tpl, host)
 

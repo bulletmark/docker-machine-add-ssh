@@ -30,6 +30,9 @@ optional arguments:
                   machine command
   -B, --nobackup  do not create a backup file
   -S, --nostrict  disable strict host key check
+
+Note you can set default starting arguments in ~/.config/docker-machine-add-
+ssh-flags.conf.
 ```
 
 See the latest documentation and code at
