@@ -125,11 +125,17 @@ Ensure
 [`python3-pip`](https://docs.python.org/3/installing/index.html) are
 installed. Python 3.6 or later is required.
 
+Arch users can install [docker-machine-add-ssh from the
+AUR](https://aur.archlinux.org/packages/docker-machine-add-ssh/).
+
+Ensure that `python3-pip` and `python3-wheel` packages are installed.
 Note [docker-machine-add-ssh is on
 PyPI](https://pypi.org/project/docker-machine-add-ssh/) so you can just
-type `sudo pip3 install docker-machine-add-ssh`. Arch users can install
-[docker-machine-add-ssh from the
-AUR](https://aur.archlinux.org/packages/docker-machine-add-ssh/).
+type:
+
+```sh
+$ sudo pip3 install -U docker-machine-add-ssh
+```
 
 Alternately, do the following to install from the source repository.
 
@@ -138,10 +144,10 @@ $ git clone http://github.com/bulletmark/docker-machine-add-ssh
 $ cd docker-machine-add-ssh
 
 # Install globally ..
-$ sudo pip3 install .
+$ sudo pip3 install -U .
 
 # Or, install for yourself only ..
-$ pip3 install .
+$ pip3 install -U .
 ```
 
 ### UPGRADE
