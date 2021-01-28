@@ -27,7 +27,7 @@ from urllib.parse import urlparse
 SSHFILE = Path('~/.ssh/config').expanduser()
 MACHDIR = Path('~/.docker/machine/machines').expanduser()
 PROG = Path(sys.argv[0]).stem
-CNFFILE = Path(f'~/.config/{PROG}-flags.conf').expanduser()
+CNFFILE = f'~/.config/{PROG}-flags.conf'
 
 # The template for the new host entry we write
 TEMPLATE = '''
@@ -82,7 +82,7 @@ def main() -> None:
     # Process command line options
     opt = argparse.ArgumentParser(description=__doc__.strip(),
             epilog='Note you can set default starting arguments in '
-            f'~/.config/{PROG}-flags.conf.')
+            f'{CNFFILE}.')
     opt.add_argument('-r', '--replace', action='store_true',
             help='do not fail if host entry already exists, just replace it')
     opt.add_argument('-d', '--delete', action='store_true',
@@ -99,8 +99,9 @@ def main() -> None:
 
     # Merge in default args from user config file. Then parse the
     # command line.
-    cnfargs = shlex.split(CNFFILE.read_text().strip()) \
-            if CNFFILE.exists() else []
+    cnffile = Path(CNFFILE).expanduser()
+    cnfargs = shlex.split(cnffile.read_text().strip()) \
+            if cnffile.exists() else []
     args = opt.parse_args(cnfargs + sys.argv[1:])
     host = args.name
 
