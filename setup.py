@@ -11,7 +11,7 @@ here = Path(__file__).resolve().parent
 
 setup(
     name=name,
-    version='1.5',
+    version='1.6',
     description='Adds docker-machine ssh configuration into your '
     'personal ssh configuration',
     long_description=here.joinpath('README.md').read_text(),

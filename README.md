@@ -107,9 +107,10 @@ vb1 entry deleted from /home/mark/.ssh/config.
 ### DEFAULT ARGUMENTS
 
 You can add default arguments to a personal configuration file
-`~/.config/docker-machine-add-ssh-flags.conf`. If that file exists then each
-line of arguments will be concatenated and automatically prepended
-to your `docker-machine-add-ssh` command line arguments.
+`~/.config/docker-machine-add-ssh-flags.conf`. If that file exists then
+each line of arguments will be concatenated and automatically prepended
+to your `docker-machine-add-ssh` command line arguments. Comments in the
+file (i.e. starting with "#") are ignored.
 
 This allow you to set default preferred starting arguments to
 `docker-machine-add-ssh`. Type `docker-machine-add-ssh -h` to see the
