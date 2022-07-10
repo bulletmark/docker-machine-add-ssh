@@ -1,4 +1,6 @@
 ## DOCKER-MACHINE ADD SSH
+[![PyPi](https://img.shields.io/pypi/v/docker-machine-add-ssh)](https://pypi.org/project/docker-machine-add-ssh/)
+[![AUR](https://img.shields.io/aur/version/docker-machine-add-ssh)](https://aur.archlinux.org/packages/docker-machine-add-ssh/)
 
 This is a command line program to allow you to use ordinary
 [ssh](ssh.com/ssh) commands with [Docker
