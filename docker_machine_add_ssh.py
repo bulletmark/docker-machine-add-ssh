@@ -27,7 +27,8 @@ from urllib.parse import urlparse
 SSHFILE = Path('~/.ssh/config').expanduser()
 MACHDIR = Path('~/.docker/machine/machines').expanduser()
 PROG = Path(sys.argv[0]).stem
-CNFFILE = Path(f'~/.config/{PROG}-flags.conf')
+CNFFILE = Path(os.getenv('XDG_CONFIG_HOME', '~/.config'),
+        f'{PROG}-flags.conf')
 
 # The template for the new host entry we write
 TEMPLATE = '''
