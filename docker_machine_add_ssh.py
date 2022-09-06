@@ -82,7 +82,7 @@ def getparams_files(tpl: dict, host: str) -> None:
 def main() -> None:
     # Process command line options
     opt = argparse.ArgumentParser(description=__doc__.strip(),
-            epilog='Note you can set default starting arguments in '
+            epilog='Note you can set default starting options in '
             f'{CNFFILE}.')
     opt.add_argument('-r', '--replace', action='store_true',
             help='do not fail if host entry already exists, just replace it')

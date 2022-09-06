@@ -9,7 +9,9 @@ Machine](https://github.com/docker/machine) rather than use
 or [`docker-machine
 scp`](https://docs.docker.com/machine/reference/scp/).
 
-### USAGE
+## USAGE
+
+Type `docker-machine-add-ssh -h` to view the following usage summary:
 
 ```
 usage: docker-machine-add-ssh [-h] [-r] [-d] [-f] [-B] [-S] name
@@ -24,7 +26,7 @@ can then also be used to that docker-machine.
 positional arguments:
   name            docker machine name
 
-optional arguments:
+options:
   -h, --help      show this help message and exit
   -r, --replace   do not fail if host entry already exists, just replace it
   -d, --delete    just delete any existing host entry
@@ -33,14 +35,11 @@ optional arguments:
   -B, --nobackup  do not create a backup file
   -S, --nostrict  disable strict host key check
 
-Note you can set default starting arguments in ~/.config/docker-machine-add-
-ssh-flags.conf.
+Note you can set default starting options in ~/.config/docker_machine_add_ssh-
+flags.conf.
 ```
 
-See the latest documentation and code at
-https://github.com/bulletmark/docker-machine-add-ssh/.
-
-### EXAMPLES
+## EXAMPLES
 
 ```sh
 $ tree foodir
@@ -106,22 +105,22 @@ $ docker-machine-add-ssh -d vb1
 vb1 entry deleted from /home/mark/.ssh/config.
 ```
 
-### DEFAULT ARGUMENTS
+## DEFAULT OPTIONS
 
-You can add default arguments to a personal configuration file
+You can add default options to a personal configuration file
 `~/.config/docker-machine-add-ssh-flags.conf`. If that file exists then
 each line of arguments will be concatenated and automatically prepended
-to your `docker-machine-add-ssh` command line arguments. Comments in the
+to your `docker-machine-add-ssh` command line options. Comments in the
 file (i.e. starting with "#") are ignored.
 
-This allow you to set default preferred starting arguments to
+This allow you to set default preferred starting options to
 `docker-machine-add-ssh`. Type `docker-machine-add-ssh -h` to see the
-arguments supported.
+options supported.
 E.g. `echo "-r" >~/.config/docker-machine-add-ssh-flags.conf` to make
 `docker-machine-add-ssh` always replace existing host entries even if
 they already exist.
 
-### INSTALLATION
+## INSTALLATION
 
 Ensure
 [`docker-machine`](https://docs.docker.com/machine/install-machine)
@@ -152,7 +151,7 @@ $ sudo pip3 install -U .
 $ pip3 install -U .
 ```
 
-### UPGRADE
+## UPGRADE
 
 ```sh
 $ cd docker-machine-add-ssh  # Source dir, as above
@@ -162,14 +161,14 @@ $ sudo pip3 install -U .
 # Or, pip3 install -U .
 ```
 
-### REMOVAL
+## REMOVAL
 
 ```sh
 $ sudo pip3 uninstall docker-machine-add-ssh
 # Or, pip3 uninstall docker-machine-add-ssh
 ```
 
-### LICENSE
+## LICENSE
 
 Copyright (C) 2020 Mark Blakeney. This program is distributed under the
 terms of the GNU General Public License.
