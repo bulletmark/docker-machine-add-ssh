@@ -19,7 +19,10 @@ upload: sdist
 	twine3 upload --skip-existing dist/*
 
 check:
+	ruff .
 	flake8 $(PYNAME).py setup.py
+	mypy $(PYNAME).py
+	pyright $(PYNAME).py
 	vermin --no-tips -i $(PYNAME).py setup.py
 	python3 setup.py check
 

@@ -23,6 +23,7 @@ from pathlib import Path
 from datetime import datetime
 from functools import partial
 from urllib.parse import urlparse
+from typing import List
 
 SSHFILE = Path('~/.ssh/config').expanduser()
 MACHDIR = Path('~/.docker/machine/machines').expanduser()
@@ -100,12 +101,13 @@ def main() -> None:
 
     # Merge in default args from user config file. Then parse the
     # command line.
-    cnflines = ''
     cnffile = CNFFILE.expanduser()
     if cnffile.exists():
         with cnffile.open() as fp:
-            cnflines = [re.sub(r'#.*$', '', line).strip() for line in fp]
-        cnflines = ' '.join(cnflines).strip()
+            lines = [re.sub(r'#.*$', '', line).strip() for line in fp]
+        cnflines = ' '.join(lines).strip()
+    else:
+        cnflines = ''
 
     args = opt.parse_args(shlex.split(cnflines) + sys.argv[1:])
 
@@ -117,10 +119,12 @@ def main() -> None:
         tpl = {'host': host, 'progname': PROG, 'datetime':
                 datetime.now().isoformat(sep=' ', timespec='seconds')}
         getparams_files(tpl, host) if args.files else getparams_cmd(tpl, host)
+    else:
+        tpl = {}
 
     # Iterate over ssh config file to search for existing entry and to find
     # insertion point
-    newlines = []
+    newlines: List[str] = []
     insert = 0
     found = False
     exists = SSHFILE.exists()
