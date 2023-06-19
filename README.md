@@ -131,41 +131,17 @@ AUR](https://aur.archlinux.org/packages/docker-machine-add-ssh/).
 
 Python 3.7 or later is required. Note [docker-machine-add-ssh is on
 PyPI](https://pypi.org/project/docker-machine-add-ssh/) so just ensure
-that `python3-pip` and `python3-wheel` are installed then type the
-following to install (or upgrade):
+that [`pipx`](https://pypa.github.io/pipx/) is installed then type the
+following:
 
-```sh
-$ sudo pip3 install -U docker-machine-add-ssh
+```
+$ pipx install docker-machine-add-ssh
 ```
 
-Alternately, do the following to install from the source repository.
+To upgrade:
 
-```sh
-$ git clone http://github.com/bulletmark/docker-machine-add-ssh
-$ cd docker-machine-add-ssh
-
-# Install globally ..
-$ sudo pip3 install -U .
-
-# Or, install for yourself only ..
-$ pip3 install -U .
 ```
-
-## UPGRADE
-
-```sh
-$ cd docker-machine-add-ssh  # Source dir, as above
-$ git pull
-
-$ sudo pip3 install -U .
-# Or, pip3 install -U .
-```
-
-## REMOVAL
-
-```sh
-$ sudo pip3 uninstall docker-machine-add-ssh
-# Or, pip3 uninstall docker-machine-add-ssh
+$ pipx upgrade docker-machine-add-ssh
 ```
 
 ## LICENSE
