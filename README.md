@@ -11,7 +11,7 @@ scp`](https://docs.docker.com/machine/reference/scp/).
 
 ## USAGE
 
-Type `docker-machine-add-ssh -h` to view the following usage summary:
+Type `docker-machine-add-ssh -h` to view the usage summary:
 
 ```
 usage: docker-machine-add-ssh [-h] [-r] [-d] [-f] [-B] [-S] name
