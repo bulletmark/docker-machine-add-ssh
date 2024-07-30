@@ -9,6 +9,7 @@ else that relies on them or normal ssh can then also be used to that
 docker-machine.
 '''
 # Author: Mark Blakeney, Apr 2020.
+from __future__ import annotations
 
 import os
 import sys
@@ -23,7 +24,6 @@ from pathlib import Path
 from datetime import datetime
 from functools import partial
 from urllib.parse import urlparse
-from typing import List
 
 SSHFILE = Path('~/.ssh/config').expanduser()
 MACHDIR = Path('~/.docker/machine/machines').expanduser()
@@ -82,7 +82,7 @@ def getparams_files(tpl: dict, host: str) -> None:
 
 def main() -> None:
     # Process command line options
-    opt = argparse.ArgumentParser(description=__doc__.strip(),
+    opt = argparse.ArgumentParser(description=__doc__,
             epilog='Note you can set default starting options in '
             f'{CNFFILE}.')
     opt.add_argument('-r', '--replace', action='store_true',
@@ -124,7 +124,7 @@ def main() -> None:
 
     # Iterate over ssh config file to search for existing entry and to find
     # insertion point
-    newlines: List[str] = []
+    newlines: list[str] = []
     insert = 0
     found = False
     exists = SSHFILE.exists()
