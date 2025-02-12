@@ -122,27 +122,37 @@ they already exist.
 
 ## INSTALLATION
 
-Ensure
-[`docker-machine`](https://docs.docker.com/machine/install-machine)
-is installed.
+Python 3.7 or later is required. Ensure
+[`docker-machine`](https://docs.docker.com/machine/install-machine) is
+installed.
 
 Arch users can install [docker-machine-add-ssh from the
 AUR](https://aur.archlinux.org/packages/docker-machine-add-ssh/).
 
-Python 3.7 or later is required. Note [docker-machine-add-ssh is on
-PyPI](https://pypi.org/project/docker-machine-add-ssh/) so just ensure
-that [`pipx`](https://pypa.github.io/pipx/) is installed then type the
-following:
+Note [docker-machine-add-ssh is on
+PyPI](https://pypi.org/project/docker-machine-add-ssh/) so the easiest
+way to install it is to use [`uv tool`][uvtool] (or [`pipx`][pipx] or
+[`pipxu`][pipxu]).
 
-```
-$ pipx install docker-machine-add-ssh
+```sh
+$ uv tool install docker-machine-add-ssh
 ```
 
 To upgrade:
 
+```sh
+$ uv tool upgrade docker-machine-add-ssh
 ```
-$ pipx upgrade docker-machine-add-ssh
+
+To uninstall:
+
+```sh
+$ uv tool uninstall docker-machine-add-ssh
 ```
+
+[pipx]: https://github.com/pypa/pipx
+[pipxu]: https://github.com/bulletmark/pipxu
+[uvtool]: https://docs.astral.sh/uv/guides/tools/#installing-tools
 
 ## LICENSE
 
