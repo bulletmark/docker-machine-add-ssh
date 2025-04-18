@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "docker-machine-add-ssh"
 description = "Adds docker-machine ssh configuration into your personal ssh configuration"
 readme = "README.md"
+license = "GPL-3.0-or-later"
 requires-python = ">=3.7"
 keywords = ["docker", "docker-machine", "ssh"]
 classifiers = [
@@ -22,9 +23,6 @@ Homepage = "https://github.com/bulletmark/docker-machine-add-ssh"
 
 [project.scripts]
 docker-machine-add-ssh = "docker_machine_add_ssh:main"
-
-[project.license]
-text = "GPLv3"
 
 [tool.setuptools_scm]
 version_scheme = "post-release"
