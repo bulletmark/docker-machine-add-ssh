@@ -3,7 +3,7 @@
 [![AUR](https://img.shields.io/aur/version/docker-machine-add-ssh)](https://aur.archlinux.org/packages/docker-machine-add-ssh/)
 
 This is a command line program to allow you to use ordinary
-[ssh](ssh.com/ssh) commands with [Docker
+[ssh](https://en.wikipedia.org/wiki/Secure_Shell) commands with [Docker
 Machine](https://github.com/docker/machine) rather than use
 [`docker-machine ssh`](https://docs.docker.com/machine/reference/ssh/)
 or [`docker-machine
